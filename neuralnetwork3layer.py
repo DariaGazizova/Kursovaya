@@ -42,11 +42,11 @@ f.close()
 #initialize hidden layer
 H = np.zeros((comb,hid))
 
-H2=np.zeros((comb,hid))
+H2  =np.zeros((comb,hid))
 
-#initialize hidden layer
-O=np.zeros((comb,1))
-O2=np.zeros((comb,1))
+#initialize out layer
+O = np.zeros((comb,1))
+O2 = np.zeros((comb,1))
 
 # randomly initialize weights
 w0 = r*(np.random.random((init,hid)) - 0.5)
@@ -63,14 +63,19 @@ for j in xrange(5000):
     I = X
 #find hidden layer
     H1 = np.dot(I,w0)
+#parallel function
     H2 = p.map(nonlin,H1)
-   
+
+#change type   
     for i in range (comb):
         H[i][:] = H2[i][:]
+
 #find out layer
     O1 = np.dot(H,w1)
+#parallel function
     O2 = p.map(nonlin,O1)
 
+#change type
     for i in range (comb):
         O[i][:] = O2[i][:]
 
@@ -98,8 +103,37 @@ for j in xrange(5000):
         break
 
     print j
-print l2
+print O
 
 print (time.time()-start_time)    
 
+f= open('weights.txt', 'w')
+f.write(str(init))
+f.write('\n')
+f.write(str(hid))
+f.write('\n')
+for i in range(init):
+    for j in range(hid): 
+        f.write(str(w0[i][j]))
+        f.write(" ")
+    f.write('\n')
+for i in range(hid):
+    #for 
+    f.write(str(w1[i][0]))
+    f.write('\n')
+f.close()
+
+f = open('init.txt','r')
+line1 = f.readlines()
+#calculation test combination
+test = np.zeros((1,init))
+W = line1[init+1].split()
+W2 = W[20-init:20]
+W3 = [int(x) for x in W2]
+test = W3
+print test
+I=test
+H =nonlin(np.dot(I,w0)) 
+O = nonlin(np.dot(H,w1))
+print O
 
