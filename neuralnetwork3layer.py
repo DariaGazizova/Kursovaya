@@ -1,3 +1,10 @@
+
+'''
+http://iamtrask.github.io/2015/07/12/basic-python-network/
+was used for development of this code
+'''
+
+
 import numpy as np
 from multiprocessing import Pool 
 import time
